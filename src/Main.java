@@ -6,32 +6,30 @@ public class Main {
     public static void main(String[] args) {
         String password = "111";
         Checker checker = new Checker(password);
-        System.out.println(Arrays.toString(bruteforce(0, checker)));
+        System.out.println(bruteforce(0, checker));
     }
 
-    public static int[] bruteforce(int cycleIndicator, Checker checker) {
+    public static String bruteforce(int cycleIndicator, Checker checker){
+        return Arrays.toString(algorithm(cycleIndicator, checker));
+    }
+
+    public static int[] algorithm(int cycleIndicator, Checker checker) {
 
         if (cycleIndicator == 0) {
             //cycle the last digit
-            while (!checker.check(input) && input[0] != 9) {
+            while (!checker.check(buildInput(input)) && input[0] != 9) {
                 input[0]++;
-                System.out.println(input[0]);
             }
-            if (checker.check(input)) return input;
+            if (checker.check(buildInput(input))) return input;
             //all combinations of last digit are false
-            for (int j : input) {
-                System.out.print(j);
-            }
 
             input[0] = 0;
             bruteforce(1, checker);
 
         } else if (input[cycleIndicator] < 9) {
-            if (checker.check(input)) return input;
             input[cycleIndicator]++;
             bruteforce(--cycleIndicator, checker);
         } else {//all combinations of this cycle have been false
-            if (checker.check(input)) return input;
             //put all digits left of cycleIndicator to 0
             cycleIndicator++;
             for (int i = 0; i < cycleIndicator; i++) {
@@ -42,5 +40,13 @@ public class Main {
         }
 
         return input;
+    }
+
+    public static String buildInput(int[] input){
+        StringBuilder password = new StringBuilder();
+        for (int digit:input) {
+            password.append(digit);
+        }
+        return password.toString();
     }
 }

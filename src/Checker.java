@@ -5,11 +5,7 @@ public class Checker {
         this.password = password;
     }
 
-    public boolean check(int[] input){
-        String password = "";
-        for (int digit:input) {
-            password+=digit;
-        }
+    public boolean check(String password){
         return password.equals(this.password);
     }
 }
